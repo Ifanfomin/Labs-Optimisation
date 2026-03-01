@@ -1,0 +1,205 @@
+\documentclass[12pt,a4paper,reqno]{amsproc}
+
+\usepackage[cp1251]{inputenc}
+\usepackage[english,russian]{babel}
+
+\usepackage{amssymb}
+\usepackage{a4wide}
+\usepackage{graphicx}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{\bf Теорема} %[section]
+\newtheorem{pro}{\bf Предложение}
+\newtheorem{lemma}{\bf Лемма} %[theorem]
+\newtheorem{corollary}{\bf Следствие} %[theorem]
+\newtheorem{conjecture}[theorem]{\bf Гипотеза}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Определение}
+\newtheorem{example}[theorem]{Пример}
+\newtheorem{remark}[theorem]{\bf Remark}
+\newtheorem{step}{Шаг}[theorem]
+
+\renewcommand{\thestep}{\arabic{step}}
+
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\ind}{ind}
+\DeclareMathOperator{\Int}{int}
+\DeclareMathOperator{\grad}{grad}
+
+\theoremstyle{plain}
+\newtoks\thehProclaim
+\newtheorem*{Proclaim}{\the\thehProclaim}
+\newenvironment{proclaim}[1]{\thehProclaim{#1}\begin{Proclaim}}{\end{Proclaim}}
+
+\theoremstyle{definition}
+\newtoks{\thehRemark}
+\newtheorem*{Remark}{\the\thehRemark}
+\newenvironment{rem}[1]{\thehRemark{#1}\begin{Remark}}{\end{Remark}}
+
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+\DeclareRobustCommand{\No}{%
+   \ifmmode{\nfss@text{\textnumero}}\else\textnumero\fi}
+
+%------------------------------------------------------------------------------------------------
+\begin{document}
+
+
+\def\contentsname{Оглавление}
+\def\figurename{Фиг.}
+\def\partname{Часть}
+\def\refname{Литература}
+\def\bibname{Литература}
+\def\tablename{Таблица}
+\def\chaptername{Глава}
+\def\proofname{Доказательство}
+\def\appendixname{Дополнение}
+\def\keywordsname{Ключевые слова}
+\def\abstractname{Аннотация}
+
+
+\section*{Лабораторная работа №2. \\Методы градиентного спуска}
+
+\begin{definition}
+Множество $\Omega\subset\mathbb R^n$ называется выпуклым, если оно вместе с любыми своими точками $x$, $y\in\Omega$ содержит также соединяющий их отрезок $[x, y]$,
+т.е. при всех $\alpha\in[0,1]$ будет $\alpha x+(1-\alpha)y\in\Omega$. Пустое множество считаем выпуклым по определению.
+\end{definition}
+
+\begin{definition}
+Функцию $f\colon\Omega\to\mathbb R$, определенную на выпуклом множестве $\Omega$, называют выпуклой на нем, если для любых точек $x$, $y\in\Omega$ и любого числа
+$\alpha\in[0, 1]$ выполнено неравенство
+\begin{equation*}
+f(\alpha x+(1-\alpha)y)\leqslant\alpha f(x)+(1-\alpha)f(y).
+\end{equation*}
+\end{definition}
+
+\begin{definition}
+Функцию $f\colon\Omega\to\mathbb R$, определенную на выпуклом множестве $\Omega$, называют сильно выпуклой на нем, если существует такая константа $\gamma>0$,
+называемая параметром сильной выпуклости, что для любых точек $x$, $y\in\Omega$ и любого числа $\alpha\in[0, 1]$ справедливо неравенство
+\begin{equation*}
+f(\alpha x+(1-\alpha)y)\leqslant\alpha f(x)+(1-\alpha)f(y)-\alpha(1-\alpha)\gamma\left|x-y\right|^2.
+\end{equation*}
+\end{definition}
+
+\begin{definition}
+Будем говорить, что градиент функции $f\colon\Omega\to\mathbb R$, непрерывно дифференцируемой на множестве $\Omega$, удовлетворяет условию Липшица с показателем $L>0$, если
+для любых $x$, $y\in\Omega$ справедливо неравенство
+\begin{equation}\label{lip}
+|\grad f(x)-\grad f(y)|\leqslant L|x-y|.
+\end{equation}
+\end{definition}
+
+\begin{definition}
+Последовательность точек $\{x^k\}$ называется релаксационной для функции $f$, если для любого $k\in\mathbb N$ выполняется неравенство $f(x^k)\leqslant f(x^{k-1})$.
+\end{definition}
+
+Зададим итерационный процесс отыскания точки минимума $x^*$ по формуле
+\begin{equation}\label{iter-meth}
+x^{k}=x^{k-1}+\beta_k u^k,\quad k\in\mathbb N,
+\end{equation}
+где $u^k\in\mathbb R^n$ --- единичный вектор, задающий направление спуска на $k$-й итерации, а $\beta_k\geqslant 0$ --- длина шага спуска. Если $u^k=w^k/|w^k|$, где
+$w^k=-\grad f\left(x^{k-1}\right)$, то будем говорить о градиентном методе.
+
+\begin{pro}
+Если на любой $k$-й итерации шаг $\beta_k$ удовлетворяет условию
+\begin{equation*}
+f\left(x^{k-1}+\beta_k u_k\right)\leqslant(1-\lambda_k)f\left(x^{k-1}\right)+\lambda_k\min\limits_{\beta\geqslant 0}f\left(x^{k-1}+\beta u_k\right),
+\end{equation*}
+где $\lambda_k\in[0, 1]$, то последовательность $\left\{x^k\right\}$ является релаксационной.
+\end{pro}
+
+\begin{theorem}\label{weak-conv-thm}
+Пусть функция $f\colon\mathbb R^n\to\mathbb R$ выпукла на $\mathbb R^n$, а ее градиент удовлетворяет условию Липшица \eqref{lip} на множестве
+$X_0=\{x\in\mathbb R^n\colon f(x)\leqslant f\left(x^0\right)\}$. Тогда градиентный метод обладает слабой сходимостью, причем справедлива оценка
+\begin{equation*}
+f\left(x^m\right)-f\left(x^*\right)<\frac{2L\eta^2}{m\lambda},\quad m\in\mathbb N,
+\end{equation*}
+где $\eta=\diam X_0$ и $\lambda_k\geqslant\lambda$ при всех $k\in\mathbb N$.
+\end{theorem}
+
+\begin{theorem}\label{str-conv-thm}
+Если функция $f\colon\mathbb R^n\to\mathbb R$ сильна выпукла на $\mathbb R^n$ с показателем $\gamma$ и удовлетворяет условиям теоремы \ref{weak-conv-thm}, то градиентный
+метод обладает сильной сходимостью, причем справедливы оценки
+\begin{equation*}
+\frac{f\left(x^m\right)-f\left(x^*\right)}{f\left(x^0\right)-f\left(x^*\right)}\leqslant\exp\left(-\frac{\gamma\lambda}{2L}m\right),\qquad
+\frac{\left|x^m-x^*\right|^2}{f\left(x^0\right)-f\left(x^*\right)}\leqslant\frac{2}{\gamma}\exp\left(-\frac{\gamma\lambda}{2L}m\right).
+\end{equation*}
+\end{theorem}
+
+\begin{theorem}
+Пусть функция $f\colon\mathbb R^n\to\mathbb R$ ограничена снизу и непрерывно дифференцируема на $\mathbb R^n$, а ее градиент удовлетворяет условию Липшица с константой $L$.
+Тогда последовательность $\left\{x^k\right\}$, заданная по формуле \eqref{iter-meth} с шагами $\beta_k=\kappa|w^k|$, $\kappa\in(0, 2/L)$, является релаксационной. При этом
+\begin{equation*}
+f\left(x^k\right)\leqslant f\left(x^{k-1}\right)-\kappa\left(1-\kappa\frac{L}{2}\right)|\grad f\left(x^{k-1}\right)|^2,\qquad |\grad f\left(x^{k-1}\right)|\to 0\quad\text{при}
+\quad k\to\infty.
+\end{equation*}
+Если, кроме того, множество $X_0=\{x\in\mathbb R^n\colon f(x)\leqslant f\left(x^0\right)\}$ ограничено, то функция $f$ достигает наименьшего значения и последовательность
+$\left\{x^k\right\}$ сходится к одной из стационарных точек функции $f$.
+\end{theorem}
+
+\section*{Лабораторная работа №3. \\Методы сопряженных градиентов}
+
+\textbf{Идеи методов}
+
+Рассмотрим задачу минимизации квадратичной функции
+\begin{equation*}
+f(x)=\frac{1}{2}(Qx, x).
+\end{equation*}
+Считаем, что матрица $Q$ --- положительно определенная и невырожденая, т.е. существует обратная матрица $Q^{-1}$. Тогда функция $f$ является сильно выпуклой на выпуклом множестве $\mathbb R^n$ и достигает минимального значения $0$ в единственной точке $x^*=0$.
+
+Изучим плоский случай, положив $n=2$. Будем искать точку минимума с помощью метода исчерпывающего спуска по формуле
+\begin{equation}\label{iter-form}
+x^k=x^{k-1}+\kappa_k p^k,
+\end{equation}
+где $\varphi_k(\kappa):=f(x^{k-1}+\kappa p^k)\to\min$ при $\kappa=\kappa_k$. Выберем на первой итерации в качестве направления спуска вектор антиградиента, $p^1=w^1$, поскольку в его направлении значение функции $f$ уменьшается. Как выбрать следующее направление спуска $p^2$, чтобы на второй итерации прийти в точку минимума $x^*=0$? Заметим, что,
+поскольку $\varphi_1(\kappa)=f(x^0+\kappa p^1)\to\min$ при $\kappa=\kappa_1$, то по необходимому условию экстремума дифференцируемой функции одного переменного, имеем
+\begin{equation}\label{extr-cond}
+\varphi'_1(\kappa_1)=\left(\grad f(x^0+\kappa_1 p^1),p^1\right)=(\grad f(x^1),p^1)=(Qx^1, p^1)=0.
+\end{equation}
+Далее, на второй итерации требуется получить точку минимума, т.е. $0=x^2=x^1+\kappa_2 p^2$, откуда $x^1=-\kappa_2 p^2$. Подставляя это соотношение в \eqref{extr-cond}, получим
+\begin{equation}\label{Q-ort}
+(Qp^2, p^1)=0.
+\end{equation}
+В плоском случае из этого уравнения можно однозначно найти направление $p^2$, если только не случилось так, что на первой же итерации была найдена точка минимума. Действительно, согласно \eqref{extr-cond}, вектора $p^1=w^1$ и $w^2=-\grad f(x^1)$ ортогональны, и если $x^1\ne 0$, то они составляют базис на плоскости. Вектор $p^2$ можно искать в виде
+разложения $p^2=\gamma_1 p^1+w^2$ по этому базису (второй коэффициент положен равным единице ввиду несущественности выбора модуля вектора $p^2$). Тогда из \eqref{Q-ort} находим
+коэффициент
+$$
+\gamma_1=-\frac{(Qp^1, w^2)}{(Qp^1, p^1)}
+$$
+и вычисляем направление $p^2$, исчерпывающий спуск по которому приводит на второй итерации в точку минимума.
+
+Описанный метод обобщается на случай $n$-мерного пространства и позволяет достичь точки минимума сильно выпуклой квадратичной функции за не более, чем $n$ итераций. На $k$-й
+итерации осуществляем спуск по формуле \eqref{iter-form}, в которой $p^1=w^1$ и
+\begin{equation*}
+p^k=\gamma_{k-1}p^{k-1}+w^k
+\end{equation*}
+при $k\geqslant 2$, причем
+\begin{equation*}
+\gamma_k=-\frac{(Qp^k, w^{k+1})}{(Qp^k, p^k)}.
+\end{equation*}
+
+
+%Как выбирать направления $p^k$ спуска, чтобы найти точку минимума как можно скорее? Выбрав в качестве начального приближения точку $x^0$, можно за одну итерацию прийти в точку
+%минимума $x^*=0$, если $0=x^0+\kappa_1 p^1$. Это означает, что направление спуска $p^1$
+%коллинеарно радиус-вектору точки начального приближения $x^0$. Таким образом, за одну итерацию решить задачу минимизации рассматриваемым методом можно только
+
+
+\section*{Лабораторная работа №4. \\Метод Ньютона и его модификации}
+
+\begin{theorem}
+Пусть функция $f\in C^{2,lip}(\mathbb R^n)$ достигает наименьшего значения в точке $x^*$. Тогда существует такое число $\varepsilon>0$, что при любом начальном приближении
+$x^0$ таком, что $|x^0-x^*|<\varepsilon$, метод Ньютона сходится с квадратичной скоростью, т.е. справедлива оценка
+$$
+|x^k-x^*|\leqslant C |x^{k-1}-x^*|^2,\qquad k\geqslant 1,
+$$
+с некоторой константой $C>0$.
+\end{theorem}
+
+
+\end{document}

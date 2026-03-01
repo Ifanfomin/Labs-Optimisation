@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\base">
+      <UniqueIdentifier>{b868f2cd-cdc5-4271-ac72-6988c0ee1968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\base\functions">
+      <UniqueIdentifier>{c33c3abb-7585-4d24-b19e-011472d6da77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\base\matrices">
+      <UniqueIdentifier>{e8bfdef0-b6d1-4177-9bab-f426b51269ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\methods">
+      <UniqueIdentifier>{833b6ed4-dbcf-478c-bab3-e00c23e0e387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\base\simplex">
+      <UniqueIdentifier>{c8d12e36-55b9-4d3a-9eed-3258008a8de9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vect.h">
+      <Filter>Header Files\base</Filter>
+    </ClInclude>
+    <ClInclude Include="func_inform_interface.h">
+      <Filter>Header Files\base\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix_interface.h">
+      <Filter>Header Files\base\matrices</Filter>
+    </ClInclude>
+    <ClInclude Include="sym_2d_matrix.h">
+      <Filter>Header Files\base\matrices</Filter>
+    </ClInclude>
+    <ClInclude Include="goal_func_inform.h">
+      <Filter>Header Files\base\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="simplex_regular.h">
+      <Filter>Header Files\base\simplex</Filter>
+    </ClInclude>
+    <ClInclude Include="simplex_non_regular.h">
+      <Filter>Header Files\base\simplex</Filter>
+    </ClInclude>
+    <ClInclude Include="optimization_task.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimization_method_interface.h">
+      <Filter>Header Files\methods</Filter>
+    </ClInclude>
+    <ClInclude Include="gradient_descent_with_spalling_step_method.h">
+      <Filter>Header Files\methods</Filter>
+    </ClInclude>
+    <ClInclude Include="newton_method.h">
+      <Filter>Header Files\methods</Filter>
+    </ClInclude>
+    <ClInclude Include="newton_with_spalling_step_method.h">
+      <Filter>Header Files\methods</Filter>
+    </ClInclude>
+    <ClInclude Include="regular_simplex_method.h">
+      <Filter>Header Files\methods</Filter>
+    </ClInclude>
+    <ClInclude Include="non_regular_simplex_method.h">
+      <Filter>Header Files\methods</Filter>
+    </ClInclude>
+    <ClInclude Include="optimization_method_selector.h">
+      <Filter>Header Files\methods</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="optimization_methods.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
